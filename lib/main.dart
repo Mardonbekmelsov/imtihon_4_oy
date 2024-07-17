@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:imtihon_4_oy/controller/users_controller.dart';
 import 'package:imtihon_4_oy/controllers/thememode_controller.dart';
 import 'package:imtihon_4_oy/firebase_options.dart';
 import 'package:imtihon_4_oy/services/location_services.dart';
@@ -25,10 +26,12 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (context) {
             return ThememodeController();
-          })
+          }),
+          ChangeNotifierProvider(create: (context) => UsersController()),
         ],
         builder: (context, child) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             theme: Provider.of<ThememodeController>(context).nightmode
                 ? ThemeData.dark()
                 : ThemeData.light(),

@@ -4,17 +4,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:imtihon_4_oy/models/event_model.dart';
 import 'package:imtihon_4_oy/services/events_firebase_services.dart';
 import 'package:imtihon_4_oy/services/geocoding_service.dart';
 
-class AddEventScreen extends StatefulWidget {
-  const AddEventScreen({super.key});
+class EditEventScreen extends StatefulWidget {
+  EventModel event;
+  EditEventScreen({required this.event});
 
   @override
-  State<AddEventScreen> createState() => _AddEventScreenState();
+  State<EditEventScreen> createState() => _EditEventScreenState();
 }
 
-class _AddEventScreenState extends State<AddEventScreen> {
+class _EditEventScreenState extends State<EditEventScreen> {
   TimeOfDay? selectedTime;
   DateTime? selectedDate;
   LatLng? latLng;
@@ -105,51 +107,51 @@ class _AddEventScreenState extends State<AddEventScreen> {
 
   final descriptionController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    titleController.text = widget.event.title;
+    descriptionController.text = widget.event.description;
+  }
+
   void submit() async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
     }
 
     try {
-      if (selectedDate != null && selectedTime != null && latLng != null) {
-        print("_________________________________________________-$curentUser");
-        print(
-            "_________________________________________________-${titleController.text}");
-        print(
-            "_________________________________________________-$selectedTime");
-        print(
-            "_________________________________________________-${descriptionController.text}");
-        print("_________________________________________________-$imageFile");
-        print(
-            "_________________________________________________-${latLng!.latitude}");
-        print(
-            "_________________________________________________-${latLng!.longitude}");
-        // String placeName=await GeocodingService.getAddressFromCoordinates(latLng!.latitude, latLng!.longitude),
+      print("_________________________________________________-$curentUser");
+      print(
+          "_________________________________________________-${titleController.text}");
+      print("_________________________________________________-$selectedTime");
+      print(
+          "_________________________________________________-${descriptionController.text}");
+      print("_________________________________________________-$imageFile");
+      // print(
+      //     "_________________________________________________-${latLng!.latitude}");
+      // print(
+      //     "_________________________________________________-${latLng!.longitude}");
+      // String placeName=await GeocodingService.getAddressFromCoordinates(latLng!.latitude, latLng!.longitude),
 
-        await eventsServices.addEvent(
-            curentUser,
-            titleController.text,
-            descriptionController.text,
-            selectedDate.toString(),
-            "${selectedTime!.hour}:${selectedTime!.minute}",
-            imageFile!,
-            [],
-            [],
-            latLng!.latitude,
-            latLng!.longitude,
-            locationName!);
-        Navigator.pop(context);
-      } else {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return const AlertDialog(
-              title: Text("Error"),
-              content: Text("Vaqt, Sana va joylashuv kiritish shart"),
-            );
-          },
-        );
-      }
+      await eventsServices.editEvent(
+        widget.event.id,
+        curentUser,
+        titleController.text,
+        descriptionController.text,
+        selectedDate == null
+            ? widget.event.date.toString()
+            : selectedDate.toString(),
+        selectedTime == null
+            ? widget.event.time
+            : "${selectedTime!.hour}:${selectedTime!.minute}",
+        imageFile,
+        [],
+        [],
+        latLng == null ? widget.event.lat : latLng!.latitude,
+        latLng == null ? widget.event.lng : latLng!.longitude,
+        locationName ?? widget.event.placeName,
+      );
+      Navigator.pop(context);
     } catch (e) {
       print(e);
     }
@@ -207,7 +209,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     children: [
                       selectedTime != null
                           ? Text(selectedTime!.format(context))
-                          : const Text("Time"),
+                          : Text(widget.event.time),
                       const Icon(
                         Icons.watch_later_outlined,
                       ),
@@ -239,7 +241,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       selectedDate != null
                           ? Text(
                               "${months[selectedDate!.month - 1]} ${selectedDate!.day}, ${selectedDate!.year}")
-                          : const Text("Date"),
+                          : Text(
+                              "${months[widget.event.date.month - 1]} ${widget.event.date.day}, ${widget.event.date.year}"),
                       const Icon(
                         Icons.calendar_month,
                       ),
@@ -293,19 +296,31 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   ),
                 ],
               ),
-              if (imageFile != null)
-                Container(
-                  height: 200,
-                  width: double.infinity,
-                  clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Image.file(
-                    imageFile!,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+              imageFile != null
+                  ? Container(
+                      height: 200,
+                      width: double.infinity,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Image.file(
+                        imageFile!,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : Container(
+                      height: 200,
+                      width: double.infinity,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Image.network(
+                        widget.event.imageUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
               const SizedBox(
                 height: 15,
               ),
@@ -344,8 +359,10 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       },
                       markers: markers,
                       mapType: mapType,
-                      initialCameraPosition: const CameraPosition(
-                          target: LatLng(42, 69), zoom: 15),
+                      initialCameraPosition: CameraPosition(
+                          target: LatLng(widget.event.lat.toDouble(),
+                              widget.event.lng.toDouble()),
+                          zoom: 15),
                       onMapCreated: onMapCreated,
                     ),
                   ],
@@ -366,7 +383,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   submit();
                 },
                 child: const Text(
-                  "Qo'shish",
+                  "Tahrirlash",
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,

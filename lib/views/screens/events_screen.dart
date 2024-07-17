@@ -22,6 +22,7 @@ class EventsScreen extends StatelessWidget {
           ],
           bottom: TabBar(
             isScrollable: true,
+            tabAlignment: TabAlignment.start,
             tabs: [
               Tab(text: 'Tashkil qilganlarim'),
               Tab(text: 'Yaqinda'),

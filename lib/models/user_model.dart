@@ -8,9 +8,10 @@ class UserModel {
   String lname;
   String email;
   String imageurl;
-  List<String> createdEvents;
-  List<String> participatedEvents;
-  List<String> canceledEvents;
+  List likedEvents;
+  List createdEvents;
+  List participatedEvents;
+  List canceledEvents;
 
   UserModel({
     required this.userId,
@@ -20,12 +21,13 @@ class UserModel {
     required this.lname,
     required this.email,
     required this.imageurl,
+    required this.likedEvents,
     required this.createdEvents,
     required this.participatedEvents,
     required this.canceledEvents,
   });
 
-  factory UserModel.fromQuery(QueryDocumentSnapshot query) {
+  factory UserModel.fromJson(QueryDocumentSnapshot query) {
     return UserModel(
         userId: query.id,
         lat: query['lat'],
@@ -34,6 +36,7 @@ class UserModel {
         lname: query['lname'],
         email: query['email'],
         imageurl: query['imageUrl'],
+        likedEvents: query['likedEvents'],
         createdEvents: query['createdEvents'],
         participatedEvents: query['participatedEvents'],
         canceledEvents: query['canceledEvents']);

@@ -72,10 +72,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             imageFile);
 
         Navigator.pushReplacement(
+          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(
             builder: (ctx) {
-              return MainScreen();
+              return const MainScreen();
             },
           ),
         );
@@ -102,7 +103,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create Account"),
+        title: const Text("Create Account"),
         centerTitle: true,
       ),
       body: Form(
@@ -112,7 +113,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           children: [
             TextFormField(
               controller: fnameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "Enter first name",
                 border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.person),
@@ -127,7 +128,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             ),
             TextFormField(
               controller: lnameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "Enter last name",
                 border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.person),
@@ -147,13 +148,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   onPressed: () {
                     openGallery();
                   },
-                  label: Text(
+                  label: const Text(
                     "Gallery",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.photo,
                   ),
                 ),
@@ -161,13 +162,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   onPressed: () {
                     openCamera();
                   },
-                  label: Text(
+                  label: const Text(
                     "Camera",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.camera,
                   ),
                 ),
@@ -177,14 +178,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               onPressed: () async {
                 submit();
               },
-              child: Text(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepPurple,
+              ),
+              child: const Text(
                 "Continue",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple,
               ),
             ),
             if (imageFile != null)
@@ -192,7 +193,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 height: 150,
                 width: 150,
                 clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                 ),
                 child: Image.file(

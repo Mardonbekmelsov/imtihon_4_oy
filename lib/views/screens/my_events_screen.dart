@@ -3,10 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:imtihon_4_oy/models/event_model.dart';
 import 'package:imtihon_4_oy/services/events_firebase_services.dart';
 import 'package:imtihon_4_oy/views/screens/add_event_screen.dart';
+import 'package:imtihon_4_oy/views/screens/edit_event_screen.dart';
 
 class MyEventsScreen extends StatelessWidget {
   final eventsServices = EventsFirebaseServices();
   final curUser = FirebaseAuth.instance.currentUser!.uid;
+  List<String> months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,9 +50,8 @@ class MyEventsScreen extends StatelessWidget {
             padding: EdgeInsets.only(top: 10),
             itemCount: events!.length,
             itemBuilder: (context, index) {
-              print(events.length);
-              print("----------------------------------$index");
               final event = EventModel.fromQuery(events[index]);
+
               if (event.creatorId == curUser) {
                 print("-----------------------------enter");
                 return Container(
@@ -58,40 +72,84 @@ class MyEventsScreen extends StatelessWidget {
                       SizedBox(
                         width: 10,
                       ),
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          height: 100,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                event.title,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                "${event.time}  ${months[event.date.month - 1]} ${event.date.day}, ${event.date.year}",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.place_outlined,
+                                    color: Colors.grey,
+                                  ),
+                                  SizedBox(
+                                    width: 3,
+                                  ),
+                                  Text(
+                                    "${event.placeName.split(" ")[1]}  ${event.placeName.split(" ")[2]}",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                       Container(
                         height: 100,
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(
-                              event.title,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              "${event.time}  ${event.date}",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.place_outlined,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(
-                                  width: 3,
-                                ),
-                                Text(
-                                  event.lat.toString(),
-                                ),
-                              ],
+                            PopupMenuButton<String>(
+                              icon: Icon(Icons.more_vert_outlined),
+                              itemBuilder: (BuildContext context) {
+                                return [
+                                  PopupMenuItem<String>(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  EditEventScreen(
+                                                      event: event)));
+                                    },
+                                    value: 'Tahrirlash',
+                                    child: Text('Tahrirlash'),
+                                  ),
+                                  PopupMenuItem<String>(
+                                    onTap: () async {
+                                      await eventsServices
+                                          .deleteEvent(event.id);
+                                    },
+                                    value: "O'chirish",
+                                    child: Text("O'chirish"),
+                                  ),
+                                ];
+                              },
                             ),
                           ],
                         ),

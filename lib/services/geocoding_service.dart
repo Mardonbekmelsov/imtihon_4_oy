@@ -8,7 +8,7 @@ class GeocodingService {
 
   
 
-Future<String> getAddressFromCoordinates(double latitude, double longitude) async {
+static Future<String> getAddressFromCoordinates(double latitude, double longitude) async {
   const apiKey = 'AIzaSyDxcIfLomcjjZW7DEVOUpmzSCX1x1cgj9I';
   final url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$apiKey';
 
