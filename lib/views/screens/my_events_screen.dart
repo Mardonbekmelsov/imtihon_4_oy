@@ -8,6 +8,8 @@ import 'package:imtihon_4_oy/views/widgets/event_widget.dart';
 class MyEventsScreen extends StatelessWidget {
   final eventsServices = EventsFirebaseServices();
   final curUser = FirebaseAuth.instance.currentUser!.uid;
+
+  MyEventsScreen({super.key});
   
   @override
   Widget build(BuildContext context) {
@@ -16,12 +18,12 @@ class MyEventsScreen extends StatelessWidget {
         stream: eventsServices.getEvents(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
           if (!snapshot.hasData) {
-            return Center(
+            return const Center(
               child: Text("Malumotlar topilmadi"),
             );
           }
@@ -34,7 +36,7 @@ class MyEventsScreen extends StatelessWidget {
 
           final events = snapshot.data?.docs;
           return ListView.builder(
-            padding: EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.only(top: 10),
             itemCount: events!.length,
             itemBuilder: (context, index) {
               final event = EventModel.fromQuery(events[index]);
@@ -42,7 +44,7 @@ class MyEventsScreen extends StatelessWidget {
               if (event.creatorId == curUser) {
                 return EventWidget(event: event);
               } else {
-                return SizedBox();
+                return const SizedBox();
               }
             },
           );
@@ -53,11 +55,11 @@ class MyEventsScreen extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddEventScreen(),
+              builder: (context) => const AddEventScreen(),
             ),
           );
         },
-        child: Icon(
+        child: const Icon(
           Icons.add,
         ),
       ),

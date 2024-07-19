@@ -4,6 +4,8 @@ import 'package:imtihon_4_oy/services/firebase_auth_services.dart';
 class ResetPasswordScreen extends StatelessWidget {
   final emailController = TextEditingController();
   final FirebaseAuthServices firebaseAuth = FirebaseAuthServices();
+
+  ResetPasswordScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,10 +14,10 @@ class ResetPasswordScreen extends StatelessWidget {
         children: [
           TextFormField(
             controller: emailController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
                 border: OutlineInputBorder(), hintText: "Enter Email"),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           ElevatedButton(
@@ -23,7 +25,7 @@ class ResetPasswordScreen extends StatelessWidget {
               firebaseAuth.resetPassword(emailController.text);
               Navigator.pop(context);
             },
-            child: Text("Send Link"),
+            child: const Text("Send Link"),
           ),
         ],
       ),

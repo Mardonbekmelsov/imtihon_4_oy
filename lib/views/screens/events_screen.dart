@@ -16,14 +16,9 @@ class EventsScreen extends StatelessWidget {
         drawer: CustomDrawer(),
         appBar: AppBar(
           centerTitle: true,
-          title: Text('Mening tadbirlarim'),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.notifications_none_outlined),
-            ),
-          ],
-          bottom: TabBar(
+          title: const Text('Mening tadbirlarim'),
+          
+          bottom: const TabBar(
             isScrollable: true,
             tabAlignment: TabAlignment.start,
             tabs: [

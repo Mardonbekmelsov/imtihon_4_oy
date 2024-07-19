@@ -39,7 +39,7 @@ class CustomDrawer extends StatelessWidget {
                       .getUserById(FirebaseAuth.instance.currentUser!.uid),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     }
@@ -59,19 +59,19 @@ class CustomDrawer extends StatelessWidget {
                             radius: 50,
                             backgroundImage: NetworkImage(user.imageurl),
                           ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Text(
                           '${user.fname} ${user.lname}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Text(
                           user.email,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16,
                             color: Colors.white70,
                           ),
@@ -88,9 +88,9 @@ class CustomDrawer extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MainScreen()));
+                              builder: (context) => const MainScreen()));
                     },
-                    title: Text("Bosh Sahifa"),
+                    title: const Text("Bosh Sahifa"),
                     trailing: const Icon(
                       Icons.keyboard_arrow_right,
                     ),
@@ -100,9 +100,9 @@ class CustomDrawer extends StatelessWidget {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => EventsScreen()));
+                              builder: (context) => const EventsScreen()));
                     },
-                    title: Text("Mening tadbirlarim"),
+                    title: const Text("Mening tadbirlarim"),
                     trailing: const Icon(
                       Icons.keyboard_arrow_right,
                     ),
@@ -112,16 +112,16 @@ class CustomDrawer extends StatelessWidget {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => EditUserScreen()));
+                              builder: (context) => const EditUserScreen()));
                     },
-                    title: Text("Profil ma'lumotlari"),
+                    title: const Text("Profil ma'lumotlari"),
                     trailing: const Icon(
                       Icons.keyboard_arrow_right,
                     ),
                   ),
                   ListTile(
                     onTap: () {},
-                    title: Text("Tillarni o'zgartirish"),
+                    title: const Text("Tillarni o'zgartirish"),
                     trailing: const Icon(
                       Icons.keyboard_arrow_right,
                     ),
@@ -130,7 +130,7 @@ class CustomDrawer extends StatelessWidget {
                     onTap: () {
                       themeController.changeMode();
                     },
-                    title: Text("Mode"),
+                    title: const Text("Mode"),
                     trailing: const Icon(
                       Icons.keyboard_arrow_right,
                     ),
@@ -146,7 +146,7 @@ class CustomDrawer extends StatelessWidget {
                         builder: (context) => const LoginScreen(),
                       ));
                 },
-                title: Text("Log Out"),
+                title: const Text("Log Out"),
                 trailing: const Icon(
                   Icons.keyboard_arrow_right,
                 ),

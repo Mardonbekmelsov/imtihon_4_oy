@@ -8,6 +8,8 @@ import 'package:imtihon_4_oy/services/users_firebase_services.dart';
 import 'package:imtihon_4_oy/views/screens/main_screen.dart';
 
 class EditUserScreen extends StatefulWidget {
+  const EditUserScreen({super.key});
+
   @override
   State<EditUserScreen> createState() => _EditUserScreenState();
 }
@@ -54,12 +56,12 @@ class _EditUserScreenState extends State<EditUserScreen> {
             .getUserById(FirebaseAuth.instance.currentUser!.uid),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
           if (!snapshot.hasData) {
-            return Center(
+            return const Center(
               child: Text("Malumotlar topilmadi"),
             );
           }
@@ -91,7 +93,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
                   return null;
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               TextFormField(
@@ -109,7 +111,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
                   return null;
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Row(
@@ -145,14 +147,14 @@ class _EditUserScreenState extends State<EditUserScreen> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Container(
                 height: 100,
                 width: 100,
                 clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(shape: BoxShape.circle),
+                decoration: const BoxDecoration(shape: BoxShape.circle),
                 child: imageFile == null
                     ? Image.network(
                         user.imageurl,
@@ -163,7 +165,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
                         fit: BoxFit.cover,
                       ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               ElevatedButton(
@@ -175,7 +177,7 @@ class _EditUserScreenState extends State<EditUserScreen> {
                         fnameController.text,
                         lnameController.text,
                         imageFile ?? user.imageurl).then((value){Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => MainScreen()));});
+                        MaterialPageRoute(builder: (context) => const MainScreen()));});
                     
                   }
                 },

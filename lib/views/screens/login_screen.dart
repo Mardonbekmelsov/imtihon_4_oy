@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           MaterialPageRoute(
             builder: (ctx) {
-              return MainScreen();
+              return const MainScreen();
             },
           ),
         );
@@ -151,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 20),
                 Row(
                   children: [
-                    Text(
+                    const Text(
                       "Don't have an account?",
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
@@ -163,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (ctx) {
-                            return RegisterScreen();
+                            return const RegisterScreen();
                           }),
                         );
                       },

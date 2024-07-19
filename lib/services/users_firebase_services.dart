@@ -134,8 +134,7 @@ class UsersFirebaseServices {
     userData!['fname'] = fname;
     userData['lname'] = lname;
     if (image.runtimeType == String) {
-      print(
-          "- - - -  - -  - - -  - - - - - - - - - - - - --  - - - --- - - -- ");
+     
       userData['imageUrl'] = image;
       usersCollection.doc(userId).update({
         'fname': userData['fname'],
@@ -143,7 +142,7 @@ class UsersFirebaseServices {
         'imageUrl': userData['imageUrl']
       });
     } else {
-      print("_______________________________________________-image");
+ 
       final imageReference = usersImageStorage
           .ref()
           .child("users")

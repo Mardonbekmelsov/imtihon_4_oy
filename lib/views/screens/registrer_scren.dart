@@ -36,7 +36,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           context,
           MaterialPageRoute(
             builder: (ctx) {
-              return CreateAccountScreen();
+              return const CreateAccountScreen();
             },
           ),
         );
@@ -160,7 +160,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 20),
               Row(
                 children: [
-                  Text(
+                  const Text(
                     "Already have an account?",
                     style: TextStyle(
                       fontWeight: FontWeight.w500,

@@ -10,6 +10,8 @@ class ParticipatedEventsScreen extends StatelessWidget {
   final UsersFirebaseServices usersFirebaseServices = UsersFirebaseServices();
   final curUser = FirebaseAuth.instance.currentUser!.uid;
 
+  ParticipatedEventsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,12 +19,12 @@ class ParticipatedEventsScreen extends StatelessWidget {
         stream: eventsServices.getEvents(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
           if (!snapshot.hasData) {
-            return Center(
+            return const Center(
               child: Text("Malumotlar topilmadi"),
             );
           }
@@ -39,12 +41,12 @@ class ParticipatedEventsScreen extends StatelessWidget {
               stream: usersFirebaseServices.getUserById(curUser),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
                 if (!snapshot.hasData) {
-                  return Center(
+                  return const Center(
                     child: Text("Malumotlar topilmadi"),
                   );
                 }
@@ -64,7 +66,7 @@ class ParticipatedEventsScreen extends StatelessWidget {
                           event.date.isBefore(DateTime.now())) {
                         return EventWidget(event: event);
                       } else {
-                        return SizedBox();
+                        return const SizedBox();
                       }
                     });
               });

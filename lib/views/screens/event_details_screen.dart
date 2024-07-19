@@ -9,7 +9,7 @@ import 'package:imtihon_4_oy/views/widgets/modal_bottom_sheet.dart';
 // ignore: must_be_immutable
 class EventDetailsScreen extends StatefulWidget {
   final EventModel event;
-  EventDetailsScreen({super.key, required this.event});
+  const EventDetailsScreen({super.key, required this.event});
 
   @override
   State<EventDetailsScreen> createState() => _EventDetailsScreenState();
@@ -262,7 +262,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                   final creator = UserModel.fromJson(snapshot.data!);
 
                                   return Image.network(
-                                    "${creator.imageurl}",
+                                    creator.imageurl,
                                     fit: BoxFit.cover,
                                   );
                                 },
@@ -379,7 +379,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          MainScreen()));
+                                                          const MainScreen()));
                                             },
                                             child: const Text(
                                               "Bekor Qilish",
@@ -387,7 +387,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                                   TextStyle(color: Colors.red),
                                             ),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 10,
                                           ),
                                         ],
@@ -398,7 +398,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                         vertical: 10, horizontal: 70),
                                     // height: 30,
                                     // width: 150,

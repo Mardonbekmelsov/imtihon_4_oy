@@ -116,19 +116,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
 
     try {
       if (selectedDate != null && selectedTime != null && latLng != null) {
-        print("_________________________________________________-$curentUser");
-        print(
-            "_________________________________________________-${titleController.text}");
-        print(
-            "_________________________________________________-$selectedTime");
-        print(
-            "_________________________________________________-${descriptionController.text}");
-        print("_________________________________________________-$imageFile");
-        print(
-            "_________________________________________________-${latLng!.latitude}");
-        print(
-            "_________________________________________________-${latLng!.longitude}");
-        // String placeName=await GeocodingService.getAddressFromCoordinates(latLng!.latitude, latLng!.longitude),
+      
 
         await eventsServices.addEvent(
             curentUser,
@@ -142,6 +130,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
             latLng!.latitude,
             latLng!.longitude,
             locationName!);
+        // ignore: use_build_context_synchronously
         Navigator.pop(context);
       } else {
         showDialog(
@@ -155,7 +144,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
         );
       }
     } catch (e) {
-      print(e);
+      rethrow;
     }
   }
 
@@ -323,6 +312,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 child: Stack(
                   children: [
                     GoogleMap(
+                      // ignore: prefer_collection_literals
                       gestureRecognizers: Set()
                         ..add(Factory<EagerGestureRecognizer>(
                             () => EagerGestureRecognizer())),

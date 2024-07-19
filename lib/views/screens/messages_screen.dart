@@ -5,13 +5,15 @@ import 'package:imtihon_4_oy/services/users_firebase_services.dart';
 
 class MessagesScreen extends StatelessWidget {
   final UsersFirebaseServices usersFirebaseServices = UsersFirebaseServices();
+
+  MessagesScreen({super.key});
   @override
   Widget build(BuildContext context) {
     usersFirebaseServices
         .changeMessageActivity(FirebaseAuth.instance.currentUser!.uid);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Notifications"),
+        title: const Text("Notifications"),
         centerTitle: true,
       ),
       body: StreamBuilder(
@@ -46,7 +48,7 @@ class MessagesScreen extends StatelessWidget {
                       height: 70,
                       width: 70,
                       clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(shape: BoxShape.circle),
+                      decoration: const BoxDecoration(shape: BoxShape.circle),
                       child: Image.network(
                         message['senderImage'],
                         fit: BoxFit.cover,
@@ -54,35 +56,35 @@ class MessagesScreen extends StatelessWidget {
                     ),
                     title: Text(
                       "${message['senderFname']} ${message['senderLname']}",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),
                     ),
                     subtitle: Text(
                       message['time'],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Container(
                     width: double.infinity,
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: Text(
                       message['message'],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey,
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                 ],

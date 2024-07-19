@@ -9,7 +9,7 @@ import 'package:imtihon_4_oy/views/screens/main_screen.dart';
 class ModalBottomSheet extends StatefulWidget {
   EventModel event;
   UserModel user;
-  ModalBottomSheet({required this.event, required this.user});
+  ModalBottomSheet({super.key, required this.event, required this.user});
   @override
   State<ModalBottomSheet> createState() => _ModalBottomSheetState();
 }
@@ -40,7 +40,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +48,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   "Ro'yxatdan o'tish",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -61,24 +61,24 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.clear,
                     ),
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
-            Text(
+            const Text(
               "Joylar Sonini Tanlang",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Row(
@@ -94,22 +94,22 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                         });
                       }
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.remove,
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Text(
                   "$visitorCount",
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 CircleAvatar(
@@ -120,24 +120,24 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                         visitorCount += 1;
                       });
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.add,
                     ),
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
-            Text(
+            const Text(
               "To'lov Turini Tanlang",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             ListTile(
@@ -161,20 +161,20 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                   fit: BoxFit.cover,
                 ),
               ),
-              title: Text(
+              title: const Text(
                 "Click",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               trailing: selectedIndex == 0
-                  ? Icon(
+                  ? const Icon(
                       Icons.check_circle_outline,
                       color: Colors.blue,
                     )
-                  : Icon(
+                  : const Icon(
                       Icons.circle_outlined,
                     ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             ListTile(
@@ -198,20 +198,20 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                   fit: BoxFit.cover,
                 ),
               ),
-              title: Text(
+              title: const Text(
                 "Payme",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               trailing: selectedIndex == 1
-                  ? Icon(
+                  ? const Icon(
                       Icons.check_circle_outline,
                       color: Colors.blue,
                     )
-                  : Icon(
+                  : const Icon(
                       Icons.circle_outlined,
                     ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             ListTile(
@@ -235,20 +235,20 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                   fit: BoxFit.cover,
                 ),
               ),
-              title: Text(
+              title: const Text(
                 "Naqd",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               trailing: selectedIndex == 2
-                  ? Icon(
+                  ? const Icon(
                       Icons.check_circle_outline,
                       color: Colors.blue,
                     )
-                  : Icon(
+                  : const Icon(
                       Icons.circle_outlined,
                     ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Row(
@@ -269,22 +269,22 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
 
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) {
-                      return MainScreen();
+                      return const MainScreen();
                     }));
                   },
-                  child: Text(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 80),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    backgroundColor: Colors.orange.shade100,
+                  ),
+                  child: const Text(
                     "Keyingi",
                     style: TextStyle(
                       color: Colors.orange,
                       fontWeight: FontWeight.bold,
                     ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 80),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    backgroundColor: Colors.orange.shade100,
                   ),
                 ),
               ],

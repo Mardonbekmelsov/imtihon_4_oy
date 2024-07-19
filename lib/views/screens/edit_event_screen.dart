@@ -13,7 +13,7 @@ import 'package:imtihon_4_oy/services/geocoding_service.dart';
 // ignore: must_be_immutable
 class EditEventScreen extends StatefulWidget {
   EventModel event;
-  EditEventScreen({required this.event});
+  EditEventScreen({super.key, required this.event});
 
   @override
   State<EditEventScreen> createState() => _EditEventScreenState();
@@ -123,19 +123,6 @@ class _EditEventScreenState extends State<EditEventScreen> {
     }
 
     try {
-      print("_________________________________________________-$curentUser");
-      print(
-          "_________________________________________________-${titleController.text}");
-      print("_________________________________________________-$selectedTime");
-      print(
-          "_________________________________________________-${descriptionController.text}");
-      print("_________________________________________________-$imageFile");
-      // print(
-      //     "_________________________________________________-${latLng!.latitude}");
-      // print(
-      //     "_________________________________________________-${latLng!.longitude}");
-      // String placeName=await GeocodingService.getAddressFromCoordinates(latLng!.latitude, latLng!.longitude),
-
       await eventsServices.editEvent(
         widget.event.id,
         curentUser,
@@ -154,9 +141,10 @@ class _EditEventScreenState extends State<EditEventScreen> {
         latLng == null ? widget.event.lng : latLng!.longitude,
         locationName ?? widget.event.placeName,
       );
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
     } catch (e) {
-      print(e);
+      rethrow;
     }
   }
 
@@ -337,11 +325,11 @@ class _EditEventScreenState extends State<EditEventScreen> {
                 child: Stack(
                   children: [
                     GoogleMap(
+                      // ignore: prefer_collection_literals
                       gestureRecognizers: Set()
                         ..add(Factory<EagerGestureRecognizer>(
                             () => EagerGestureRecognizer())),
                       onTap: (LatLng location) async {
-                       
                         String? locationNameLocal =
                             await GeocodingService.getAddressFromCoordinates(
                                 location.latitude, location.longitude);

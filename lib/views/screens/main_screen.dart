@@ -44,17 +44,7 @@ class _MainScreenState extends State<MainScreen> {
   String searchQuery = '';
   String searchMode = 'name';
 
-  Future<void> _checkTokenValidity(User user) async {
-    try {
-      IdTokenResult tokenResult = await user.getIdTokenResult(true);
-      DateTime? expirationTime = tokenResult.expirationTime;
-      if (expirationTime != null && expirationTime.isBefore(DateTime.now())) {
-        auth.signOut();
-      }
-    } catch (e) {
-      print('Error checking token validity: $e');
-    }
-  }
+ 
 
   void onSearchChanged(String query) {
     if (debounce?.isActive ?? false) debounce!.cancel();
@@ -109,7 +99,7 @@ class _MainScreenState extends State<MainScreen> {
                               MaterialPageRoute(
                                   builder: (context) => MessagesScreen()));
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           CupertinoIcons.bell_circle,
                           size: 35,
                           color: Colors.red,
@@ -121,7 +111,7 @@ class _MainScreenState extends State<MainScreen> {
                               MaterialPageRoute(
                                   builder: (context) => MessagesScreen()));
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           CupertinoIcons.bell_circle_fill,
                           size: 35,
                         ))
@@ -334,7 +324,7 @@ class _MainScreenState extends State<MainScreen> {
                           } else {
                             if (searchMode == "name") {
                               if (event.creatorId != user.id) {
-                                if (event.title.contains(searchQuery)) {
+                                if (event.title.toLowerCase().contains(searchQuery.toLowerCase())) {
                                   return EventWidget(event: event);
                                 }
                               } else {
@@ -344,7 +334,7 @@ class _MainScreenState extends State<MainScreen> {
                               if (event.creatorId != user.id) {
                                 if (event.placeName
                                     .toLowerCase()
-                                    .contains(searchQuery)) {
+                                    .contains(searchQuery.toLowerCase())) {
                                   return EventWidget(event: event);
                                 }
                               } else {

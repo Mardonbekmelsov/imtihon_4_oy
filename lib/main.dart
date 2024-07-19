@@ -13,11 +13,11 @@ void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   LocationServices.init();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -39,9 +39,9 @@ class MyApp extends StatelessWidget {
                 stream: FirebaseAuth.instance.authStateChanges(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return LoginScreen();
+                    return const LoginScreen();
                   }
-                  return MainScreen();
+                  return const MainScreen();
                 }),
           );
         });
