@@ -7,6 +7,8 @@ class MessagesScreen extends StatelessWidget {
   final UsersFirebaseServices usersFirebaseServices = UsersFirebaseServices();
   @override
   Widget build(BuildContext context) {
+    usersFirebaseServices
+        .changeMessageActivity(FirebaseAuth.instance.currentUser!.uid);
     return Scaffold(
       appBar: AppBar(
         title: Text("Notifications"),
@@ -65,7 +67,9 @@ class MessagesScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Container(
                     width: double.infinity,
                     padding: EdgeInsets.all(10),
@@ -78,7 +82,9 @@ class MessagesScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 15,),
+                  SizedBox(
+                    height: 15,
+                  ),
                 ],
               );
             },

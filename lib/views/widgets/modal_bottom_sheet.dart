@@ -1,6 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:imtihon_4_oy/models/event_model.dart';
+import 'package:imtihon_4_oy/models/user_model.dart';
 import 'package:imtihon_4_oy/services/events_firebase_services.dart';
 import 'package:imtihon_4_oy/services/users_firebase_services.dart';
 import 'package:imtihon_4_oy/views/screens/main_screen.dart';
@@ -8,7 +8,8 @@ import 'package:imtihon_4_oy/views/screens/main_screen.dart';
 // ignore: must_be_immutable
 class ModalBottomSheet extends StatefulWidget {
   EventModel event;
-  ModalBottomSheet({required this.event});
+  UserModel user;
+  ModalBottomSheet({required this.event, required this.user});
   @override
   State<ModalBottomSheet> createState() => _ModalBottomSheetState();
 }
@@ -20,6 +21,21 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
   int visitorCount = 0;
 
   int? selectedIndex;
+
+  List<String> months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -240,9 +256,17 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    eventsFirebaseServices.addVisitor(widget.event.id,
-                        FirebaseAuth.instance.currentUser!.uid, visitorCount);
+                    eventsFirebaseServices.addVisitor(
+                        widget.event.id, widget.user.userId, visitorCount);
                     usersFirebaseServices.participateToEvent(widget.event.id);
+                    usersFirebaseServices.sendParticipateMessage(
+                        widget.event.creatorId,
+                        widget.user.imageurl,
+                        widget.user.fname,
+                        widget.user.lname,
+                        "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}, ${months[DateTime.now().month - 1]} ${DateTime.now().day}, ${DateTime.now().year}",
+                        "${widget.event.title} tadbiringizga qatnashoqchiman, qabul qila olasizmi?");
+
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) {
                       return MainScreen();

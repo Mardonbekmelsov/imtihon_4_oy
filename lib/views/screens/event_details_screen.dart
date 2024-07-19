@@ -338,6 +338,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                               context: context,
                                               builder: (context) {
                                                 return ModalBottomSheet(
+                                                  user: user,
                                                   event: widget.event,
                                                 );
                                               });

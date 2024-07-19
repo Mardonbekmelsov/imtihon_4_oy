@@ -9,9 +9,7 @@ class UsersFirebaseServices {
   final usersCollection = FirebaseFirestore.instance.collection("users");
   final usersImageStorage = FirebaseStorage.instance;
 
-  Stream<QuerySnapshot> getUsers() async* {
-    yield* usersCollection.snapshots();
-  }
+ 
 
   void addUser(double lat, double lng, String fname, String lname, String email,
       File? image) async {
@@ -46,7 +44,8 @@ class UsersFirebaseServices {
       });
     }
 
-    Future<void> sendMessage(
+  }
+    Future<void> sendParticipateMessage(
         String creatorId,
         String senderImage,
         String senderFname,
@@ -69,7 +68,6 @@ class UsersFirebaseServices {
         "isMessageActive": userData['isMessageActive'],
       });
     }
-  }
 
   Future<void> changeMessageActivity(String id) async {
     usersCollection.doc(id).update({"isMessageActive": false});
@@ -96,11 +94,8 @@ class UsersFirebaseServices {
   }
 
   Stream<DocumentSnapshot> getUserById(String userId) async* {
-    print(userId);
-    final userBox = await usersCollection.doc(userId).snapshots();
-    // print(userBox);
-    // final user = userBox.data();
-    // print("--------------------------$user");
+    final userBox =  usersCollection.doc(userId).snapshots();
+  
     yield* userBox;
   }
 

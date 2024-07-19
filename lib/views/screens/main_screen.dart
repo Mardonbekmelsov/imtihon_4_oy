@@ -102,12 +102,12 @@ class _MainScreenState extends State<MainScreen> {
               actions: [
                 user.isMessageActive
                     ? IconButton(
-                        onPressed: () {
+                        onPressed: ()  {
+                       
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => MessagesScreen()));
-                                  usersFirebaseServices.changeMessageActivity(user.id);
                         },
                         icon: Icon(
                           CupertinoIcons.bell_circle,
@@ -115,7 +115,12 @@ class _MainScreenState extends State<MainScreen> {
                           color: Colors.red,
                         ))
                     : IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MessagesScreen()));
+                        },
                         icon: Icon(
                           CupertinoIcons.bell_circle_fill,
                           size: 35,
@@ -196,7 +201,8 @@ class _MainScreenState extends State<MainScreen> {
                             final event = EventModel.fromQuery(events[index]);
                             if (event.date.isBefore(DateTime.now()
                                     .add(const Duration(days: 7))) &&
-                                DateTime.now().isBefore(event.date)) {
+                                DateTime.now().isBefore(event.date) &&
+                                event.creatorId != user.userId) {
                               return InkWell(
                                 onTap: () {
                                   Navigator.push(
@@ -320,7 +326,7 @@ class _MainScreenState extends State<MainScreen> {
                         itemBuilder: (context, index) {
                           final event = EventModel.fromQuery(events[index]);
                           if (searchQuery.isEmpty) {
-                            if (event.creatorId != user.id) {
+                            if (event.creatorId != user.userId) {
                               return EventWidget(event: event);
                             } else {
                               return const SizedBox();
