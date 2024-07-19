@@ -12,6 +12,8 @@ class UserModel {
   List createdEvents;
   List participatedEvents;
   List canceledEvents;
+  bool isMessageActive;
+  List<Map<String, dynamic>> messages;
 
   UserModel({
     required this.userId,
@@ -25,9 +27,11 @@ class UserModel {
     required this.createdEvents,
     required this.participatedEvents,
     required this.canceledEvents,
+    required this.isMessageActive,
+    required this.messages
   });
 
-  factory UserModel.fromJson(QueryDocumentSnapshot query) {
+  factory UserModel.fromJson(DocumentSnapshot query) {
     return UserModel(
         userId: query.id,
         lat: query['lat'],
@@ -39,6 +43,9 @@ class UserModel {
         likedEvents: query['likedEvents'],
         createdEvents: query['createdEvents'],
         participatedEvents: query['participatedEvents'],
-        canceledEvents: query['canceledEvents']);
+        canceledEvents: query['canceledEvents'],
+        isMessageActive: query['isMessageActive'],
+        messages: query['messages'] as List<Map<String, dynamic>>
+        );
   }
 }

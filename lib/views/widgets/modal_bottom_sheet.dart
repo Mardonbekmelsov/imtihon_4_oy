@@ -5,6 +5,7 @@ import 'package:imtihon_4_oy/services/events_firebase_services.dart';
 import 'package:imtihon_4_oy/services/users_firebase_services.dart';
 import 'package:imtihon_4_oy/views/screens/main_screen.dart';
 
+// ignore: must_be_immutable
 class ModalBottomSheet extends StatefulWidget {
   EventModel event;
   ModalBottomSheet({required this.event});

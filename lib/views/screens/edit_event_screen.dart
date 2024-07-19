@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,6 +10,7 @@ import 'package:imtihon_4_oy/models/event_model.dart';
 import 'package:imtihon_4_oy/services/events_firebase_services.dart';
 import 'package:imtihon_4_oy/services/geocoding_service.dart';
 
+// ignore: must_be_immutable
 class EditEventScreen extends StatefulWidget {
   EventModel event;
   EditEventScreen({required this.event});
@@ -334,9 +337,11 @@ class _EditEventScreenState extends State<EditEventScreen> {
                 child: Stack(
                   children: [
                     GoogleMap(
+                      gestureRecognizers: Set()
+                        ..add(Factory<EagerGestureRecognizer>(
+                            () => EagerGestureRecognizer())),
                       onTap: (LatLng location) async {
-                        GeocodingService geocodingService = GeocodingService(
-                            apiKey: "cc8ca831-bc74-4ae4-ad76-186813085a45");
+                       
                         String? locationNameLocal =
                             await GeocodingService.getAddressFromCoordinates(
                                 location.latitude, location.longitude);
@@ -349,7 +354,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                           markers.clear();
                           markers.add(
                             Marker(
-                              markerId: const MarkerId("restaurant"),
+                              markerId: const MarkerId("event"),
                               position:
                                   LatLng(location.latitude, location.longitude),
                               icon: BitmapDescriptor.defaultMarker,

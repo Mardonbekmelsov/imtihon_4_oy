@@ -14,7 +14,7 @@ class UsersFirebaseServices {
   }
 
   void addUser(double lat, double lng, String fname, String lname, String email,
-      File? image) {
+      File? image) async {
     if (image != null) {
       final imageReference = usersImageStorage
           .ref()
@@ -27,9 +27,9 @@ class UsersFirebaseServices {
 
       uploadTask.snapshotEvents.listen((status) {});
 
-      uploadTask.whenComplete(() async {
+      await uploadTask.whenComplete(() async {
         final imageUrl = await imageReference.getDownloadURL();
-        usersCollection.doc(FirebaseAuth.instance.currentUser!.uid).set({
+        await usersCollection.doc(FirebaseAuth.instance.currentUser!.uid).set({
           'lat': lat,
           'lng': lng,
           'fname': fname,
@@ -40,9 +40,39 @@ class UsersFirebaseServices {
           'createdEvents': [],
           'participatedEvents': [],
           'canceledEvents': [],
+          'isMessageActive': false,
+          'messages': []
         });
       });
     }
+
+    Future<void> sendMessage(
+        String creatorId,
+        String senderImage,
+        String senderFname,
+        String senderLname,
+        String time,
+        String message) async {
+      final userBox = await usersCollection.doc(creatorId).get();
+      final userData = userBox.data();
+      userData!['messages'].add({
+        "senderFname": senderFname,
+        "senderLname": senderLname,
+        "senderImage": senderImage,
+        "message": message,
+        "time": time
+      });
+      userData['isMessageActive'] = true;
+
+      usersCollection.doc(creatorId).update({
+        'messages': userData['messages'],
+        "isMessageActive": userData['isMessageActive'],
+      });
+    }
+  }
+
+  Future<void> changeMessageActivity(String id) async {
+    usersCollection.doc(id).update({"isMessageActive": false});
   }
 
   Future<void> addLikedEvent(String userId, String eventId) async {
@@ -79,9 +109,13 @@ class UsersFirebaseServices {
         await usersCollection.doc(FirebaseAuth.instance.currentUser!.uid).get();
     final userData = userBox.data();
     userData!['participatedEvents'].add(eventId);
-    usersCollection
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .update({'participatedEvents': userData['participatedEvents']});
+    userData['canceledEvents'].removeWhere((element) {
+      return element == eventId;
+    });
+    usersCollection.doc(FirebaseAuth.instance.currentUser!.uid).update({
+      'participatedEvents': userData['participatedEvents'],
+      "canceledEvents": userData["canceledEvents"]
+    });
   }
 
   Future<void> cancelEvent(String eventId) async {
@@ -96,5 +130,45 @@ class UsersFirebaseServices {
       "participatedEvents": userData['participatedEvents'],
       "canceledEvents": userData['canceledEvents']
     });
+  }
+
+  Future<void> editUser(
+      String userId, String fname, String lname, var image) async {
+    final userBox = await usersCollection.doc(userId).get();
+    final userData = userBox.data();
+    userData!['fname'] = fname;
+    userData['lname'] = lname;
+    if (image.runtimeType == String) {
+      print(
+          "- - - -  - -  - - -  - - - - - - - - - - - - --  - - - --- - - -- ");
+      userData['imageUrl'] = image;
+      usersCollection.doc(userId).update({
+        'fname': userData['fname'],
+        'lname': userData['lname'],
+        'imageUrl': userData['imageUrl']
+      });
+    } else {
+      print("_______________________________________________-image");
+      final imageReference = usersImageStorage
+          .ref()
+          .child("users")
+          .child("images")
+          .child("${randomAlphaNumeric(16)}.jpg");
+      final uploadTask = imageReference.putFile(
+        image,
+      );
+
+      uploadTask.snapshotEvents.listen((status) {});
+
+      uploadTask.whenComplete(() async {
+        final imageUrl = await imageReference.getDownloadURL();
+        userData['imageUrl'] = imageUrl;
+        usersCollection.doc(userId).update({
+          'fname': userData['fname'],
+          'lname': userData['lname'],
+          'imageUrl': userData['imageUrl']
+        });
+      });
+    }
   }
 }

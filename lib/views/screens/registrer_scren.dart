@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:imtihon_4_oy/services/firebase_auth_services.dart';
 import 'package:imtihon_4_oy/views/screens/create_account_screen.dart';
 import 'package:imtihon_4_oy/views/screens/login_screen.dart';
-import 'package:imtihon_4_oy/views/screens/main_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});

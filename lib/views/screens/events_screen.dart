@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:imtihon_4_oy/views/screens/canceled_events_screen.dart';
 import 'package:imtihon_4_oy/views/screens/my_events_screen.dart';
+import 'package:imtihon_4_oy/views/screens/nearby_events_screen.dart';
+import 'package:imtihon_4_oy/views/screens/participated_events_screen.dart';
 import 'package:imtihon_4_oy/views/widgets/custom_drawer.dart';
 
 class EventsScreen extends StatelessWidget {
@@ -34,9 +37,9 @@ class EventsScreen extends StatelessWidget {
         body: TabBarView(
           children: [
             MyEventsScreen(),
-            MyEventsScreen(),
-            MyEventsScreen(),
-            MyEventsScreen(),
+            NearbyEventsScreen(),
+            ParticipatedEventsScreen(),
+            CanceledEventsScreen(),
           ],
         ),
       ),

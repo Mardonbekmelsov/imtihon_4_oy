@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:imtihon_4_oy/models/event_model.dart';
+import 'package:imtihon_4_oy/models/user_model.dart';
 import 'package:imtihon_4_oy/services/users_firebase_services.dart';
 import 'package:imtihon_4_oy/views/screens/main_screen.dart';
 import 'package:imtihon_4_oy/views/widgets/modal_bottom_sheet.dart';
@@ -58,7 +58,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               );
             }
 
-            final user = snapshot.data;
+            final user = UserModel.fromJson(snapshot.data!);
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,7 +101,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             ),
                             IconButton(
                               onPressed: () {
-                                if (user['likedEvents']
+                                if (user.likedEvents
                                     .contains(widget.event.id)) {
                                   usersFirebaseServices.removeLikedEvent(
                                       auth.currentUser!.uid, widget.event.id);
@@ -111,7 +111,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                 }
                               },
                               icon:
-                                  user!['likedEvents'].contains(widget.event.id)
+                                  user.likedEvents.contains(widget.event.id)
                                       ? const Icon(
                                           Icons.favorite,
                                           color: Colors.red,
@@ -259,10 +259,10 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                       child: Text(snapshot.error.toString()),
                                     );
                                   }
-                                  final creator = snapshot.data;
+                                  final creator = UserModel.fromJson(snapshot.data!);
 
                                   return Image.network(
-                                    "${creator!["imageUrl"]}",
+                                    "${creator.imageurl}",
                                     fit: BoxFit.cover,
                                   );
                                 },
@@ -314,79 +314,108 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        !user['participatedEvents'].contains(widget.event.id)
-                            ? Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  TextButton(
-                                    style: ElevatedButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 15, horizontal: 70),
-                                      side: const BorderSide(
-                                          color: Colors.orange, width: 3),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      backgroundColor: Colors.orange.shade50,
-                                    ),
-                                    onPressed: () {
-                                      showModalBottomSheet(
-                                          context: context,
-                                          builder: (context) {
-                                            return ModalBottomSheet(
-                                              event: widget.event,
-                                            );
-                                          });
-                                    },
-                                    child: const Text(
-                                      "Royxatdan O'tish",
-                                      style: TextStyle(
-                                        color: Colors.orange,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Column(
+                        widget.event.date.isAfter(DateTime.now())
+                            ? !user.participatedEvents
+                                    .contains(widget.event.id)
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       TextButton(
                                         style: ElevatedButton.styleFrom(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 15, horizontal: 70),
                                           side: const BorderSide(
-                                              color: Colors.red, width: 3),
+                                              color: Colors.orange, width: 3),
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                           ),
-                                          backgroundColor: Colors.red.shade50,
+                                          backgroundColor:
+                                              Colors.orange.shade50,
                                         ),
                                         onPressed: () {
-                                          usersFirebaseServices
-                                              .cancelEvent(widget.event.id);
-                                          Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      MainScreen()));
+                                          showModalBottomSheet(
+                                              context: context,
+                                              builder: (context) {
+                                                return ModalBottomSheet(
+                                                  event: widget.event,
+                                                );
+                                              });
                                         },
                                         child: const Text(
-                                          "Bekor Qilish",
-                                          style: TextStyle(color: Colors.red),
+                                          "Royxatdan O'tish",
+                                          style: TextStyle(
+                                            color: Colors.orange,
+                                          ),
                                         ),
                                       ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {},
-                                        child: const Text("Tadbir Yakunlandi"),
-                                      )
                                     ],
-                                  ),
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          TextButton(
+                                            style: ElevatedButton.styleFrom(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 15,
+                                                      horizontal: 70),
+                                              side: const BorderSide(
+                                                  color: Colors.red, width: 3),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              backgroundColor:
+                                                  Colors.red.shade50,
+                                            ),
+                                            onPressed: () {
+                                              usersFirebaseServices
+                                                  .cancelEvent(widget.event.id);
+                                              Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          MainScreen()));
+                                            },
+                                            child: const Text(
+                                              "Bekor Qilish",
+                                              style:
+                                                  TextStyle(color: Colors.red),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 70),
+                                    // height: 30,
+                                    // width: 150,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.grey.shade300,
+                                      border: Border.all(
+                                          color: Colors.grey.shade600,
+                                          width: 3),
+                                    ),
+                                    child: Text(
+                                      "Tadbir Yakunlandi",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          color: Colors.grey.shade600),
+                                    ),
+                                  )
                                 ],
                               ),
                       ],

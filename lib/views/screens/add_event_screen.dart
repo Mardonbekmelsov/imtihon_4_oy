@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,6 +27,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
   final formKey = GlobalKey<FormState>();
   final eventsServices = EventsFirebaseServices();
   final curentUser = FirebaseAuth.instance.currentUser!.uid;
+  Map<PolylineId, Polyline> polylines = {};
+  LatLng curPlace = const LatLng(41.2856806, 69.2034646);
 
   List<String> months = [
     'January',
@@ -311,30 +315,30 @@ class _AddEventScreenState extends State<AddEventScreen> {
               ),
               Container(
                 width: double.infinity,
-                height: 300,
-                clipBehavior: Clip.hardEdge,
+                height: 350,
+                // clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: Colors.amber)),
                 child: Stack(
                   children: [
                     GoogleMap(
+                      gestureRecognizers: Set()
+                        ..add(Factory<EagerGestureRecognizer>(
+                            () => EagerGestureRecognizer())),
                       onTap: (LatLng location) async {
-                        GeocodingService geocodingService = GeocodingService(
-                            apiKey: "cc8ca831-bc74-4ae4-ad76-186813085a45");
+                     
                         String? locationNameLocal =
                             await GeocodingService.getAddressFromCoordinates(
                                 location.latitude, location.longitude);
                         setState(() {
-                          // markerTapCheck = false;
-                          // mapTapCheck = true;
                           latLng =
                               LatLng(location.latitude, location.longitude);
                           locationName = locationNameLocal;
                           markers.clear();
                           markers.add(
                             Marker(
-                              markerId: const MarkerId("restaurant"),
+                              markerId: const MarkerId("tadbiro"),
                               position:
                                   LatLng(location.latitude, location.longitude),
                               icon: BitmapDescriptor.defaultMarker,
@@ -342,10 +346,11 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           );
                         });
                       },
+                      polylines: Set<Polyline>.of(polylines.values),
                       markers: markers,
                       mapType: mapType,
-                      initialCameraPosition: const CameraPosition(
-                          target: LatLng(42, 69), zoom: 15),
+                      initialCameraPosition:
+                          CameraPosition(target: curPlace, zoom: 10),
                       onMapCreated: onMapCreated,
                     ),
                   ],
